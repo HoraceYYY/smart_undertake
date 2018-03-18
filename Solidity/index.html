@@ -51,7 +51,7 @@
     <script>
 
         web3.eth.defaultAccount = web3.eth.accounts[0];
-        var TaxContract = web3.eth.contract([
+        var taxContract = web3.eth.contract([
 	{
 		"constant": true,
 		"inputs": [
@@ -69,20 +69,7 @@
 			}
 		],
 		"name": "transfer",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
+		"outputs": [],
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
@@ -147,12 +134,12 @@
 ]);
 
 
-        var Tax = TaxContract.at('0xd7cb061758283087056e0c72ab6844bce2d2f314')
+        var tax = taxContract.at('0x40258f56b76d8a41c15574628a468413ead7e22c')
 
 
-        var TaxEvent = Tax.Taxed();
+        var taxEvent = tax.Taxed({}, {fromBlock: 0, toBlock: 10});
 
-        TaxEvent.watch(function (error, result) {
+        taxEvent.watch(function (error, result) {
             if (!error) {
                 $("#loader").hide();
                 $("#instructor").html('source: ' + result.args.sourcebalance + '; target: ' + result.args.targetbalance + '; collect: '+result.args.collectbalance);
@@ -164,7 +151,7 @@
 
         $("#button").click(function () {
             $("#loader").show();
-            Tax.transfer($("#sourceId").val(), $("##targetId").val(), $("#collectId").val());
+            tax.transfer($("#sourceId").val(), $("#targetId").val(), $("#collectId").val());
         });
 
     </script>
